@@ -305,3 +305,23 @@ marcaba antes. Una sonda que sólo se ha visto pasar no prueba nada.
 - **Tabla vacía en la base de prueba**: siembra filas PROPIAS marcadas (un
   valor que nada más use, borrado al final por esa marca) en vez de dar sus
   checks por `n.a.` — ahí se escondían los dos casos de arriba.
+
+## 12. Carga masiva: lo que se escapa
+
+- **La plantilla se genera con las opciones que el formulario tiene EN ESE
+  MOMENTO.** Si una lista obligatoria (vendedores) se pide al abrir el modal, un
+  clic rápido baja una plantilla sin desplegable y la carga rechaza todas las
+  filas. Deshabilita «Descargar» y la subida hasta que la lista llegue.
+- **Una lista obligatoria que nunca llega** es un defecto aguas arriba: aquí el
+  endpoint filtraba por el NOMBRE del rol («vendedor», que no existe) y crear
+  una sesión era imposible también desde el formulario.
+- **Vacío ≠ null.** Mandar `null` rompe las columnas NOT NULL con default
+  (`estado DEFAULT 'active'`). Omite la columna y deja que la base aplique su default.
+- **Coteja la plantilla contra la base, no contra el código**: obligatorios de la
+  plantilla (`*`) = columnas NOT NULL sin default (`information_schema`). Así
+  salió un `ruta` NOT NULL que el formulario dejaba opcional.
+- **Un lote en una sola sentencia es todo o nada**: si la base rechaza una fila,
+  reintenta una por una para decir cuál y por qué.
+- **Acciones irreversibles** (invitaciones que mandan correo): sin Deshacer, con
+  el verbo en el botón después de revisar («Enviar 12 invitaciones»). Y nunca
+  contraseñas en una plantilla de Excel.
