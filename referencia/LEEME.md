@@ -10,7 +10,7 @@ esas trampas.
 ## Levantarla
 
 ```bash
-cp -R ~/.claude/skills/data-table/referencia ~/data-table-referencia
+cp -R <directorio de la skill>/referencia ~/data-table-referencia   # ~/.claude/skills/data-table o .claude/skills/data-table del repo
 cd ~/data-table-referencia
 npm ci
 npx next dev -p 3022          # http://localhost:3022

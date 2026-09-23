@@ -17,6 +17,13 @@ description: >-
   matriz tabla × check respaldada por sondas Playwright.
 ---
 
+> **¿El repo trae su propia copia?** Si existe `.claude/skills/data-table/SKILL.md` en
+> la raíz del repo en el que trabajas, **lee ese archivo y síguelo en lugar de
+> este**: es la copia nativa del proyecto, con la sección «En este template» que
+> apunta a sus archivos. (Claude Code da prioridad a la skill personal sobre la
+> del proyecto cuando se llaman igual, así que sin esta regla la copia del repo
+> nunca se usaría.)
+
 # Tablas de datos — construirlas bien
 
 Una tabla no es "una lista con bordes". Es la promesa de que se puede **comparar,
