@@ -1,0 +1,115 @@
+:root {
+  --bg: #f6f6f4;
+  --surface: #ffffff;
+  --surface-2: #f1f1ef;
+  --ink: #18181b;
+  --muted: #6b6b73;
+  --line: #e3e3e0;
+  --focus: #2f5bd3;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  /* Estados: fondo OPACO + texto; nunca color solo */
+  --b-vencida-bg: #fbe9e7; --b-vencida-fg: #9a2a1f;
+  --b-pendiente-bg: #fbf1dc; --b-pendiente-fg: #7a5212;
+  --b-pagada-bg: #e6f2ea; --b-pagada-fg: #1f6b3a;
+  --b-cancelada-bg: #ececea; --b-cancelada-fg: #57575e;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111113;
+    --surface: #18181b;
+    --surface-2: #232327;
+    --ink: #ececef;
+    --muted: #a0a0a8;
+    --line: #2e2e33;
+    --focus: #8aa6ff;
+    --danger: #ff8a80;
+    --danger-soft: #3a1d1b;
+    --b-vencida-bg: #3b1f1c; --b-vencida-fg: #ffb4a9;
+    --b-pendiente-bg: #3a2e16; --b-pendiente-fg: #f5cf85;
+    --b-pagada-bg: #1a3324; --b-pagada-fg: #9fdcb3;
+    --b-cancelada-bg: #2a2a2e; --b-cancelada-fg: #b4b4bb;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select { font: inherit; color: inherit; }
+input[type='checkbox'] { width: 16px; height: 16px; vertical-align: middle; accent-color: var(--ink); cursor: pointer; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Clases que usan los helpers de columna (lib/tabla.tsx) */
+.nulo { color: var(--muted); font-style: italic; font-variant-numeric: normal; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge[data-valor='vencida'] { background: var(--b-vencida-bg); color: var(--b-vencida-fg); }
+.badge[data-valor='pendiente'] { background: var(--b-pendiente-bg); color: var(--b-pendiente-fg); }
+.badge[data-valor='pagada'] { background: var(--b-pagada-bg); color: var(--b-pagada-fg); }
+.badge[data-valor='cancelada'] { background: var(--b-cancelada-bg); color: var(--b-cancelada-fg); }
+
+/* ── Sileo (avisos). Su CSS se inyecta en runtime AL FINAL del <head>: a igual
+   especificidad gana él, por eso cada ajuste va con `html` delante. Cada línea
+   corrige algo medido en .sondas/sileo.mjs. */
+html [data-sileo-viewport] { z-index: 300; }        /* trae 50: quedaba bajo drawer (200) y modal */
+html [data-sileo-title] { text-transform: none; }   /* trae capitalize: «1 Factura Eliminada» */
+html [data-sileo-button] { text-decoration: none; } /* es un <a>: hereda el subrayado */
+html [data-sileo-viewport][data-theme='dark'] [data-sileo-description] { color: rgb(0 0 0 / 0.68); } /* 0.5 no llega a 4.5:1 */
+
+/* Su regla de movimiento reducido existe pero pierde contra sus propias reglas
+   más específicas: sin !important seguían 0.4–0.6 s de animación. */
+@media (prefers-reduced-motion: reduce) {
+  html [data-sileo-viewport],
+  html [data-sileo-viewport] *,
+  html [data-sileo-viewport] *::before,
+  html [data-sileo-viewport] *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}
+
+/* Tonos de estado: los de fábrica son saturados y los mismos en ambos temas
+   (el verde sobre el aviso claro del tema oscuro no llega a 3:1). Página clara →
+   aviso oscuro → tonos claros; página oscura → aviso claro → tonos oscuros.
+   `html:root` y no `:root`: Sileo declara las suyas en :root DESPUÉS. */
+html:root {
+  --sileo-state-success: #9fdcb3;
+  --sileo-state-error: #ffb4a9;
+  --sileo-state-warning: #f5cf85;
+  --sileo-state-info: #a9c7ff;
+  --sileo-state-action: #e4e4e7;
+  --sileo-state-loading: #a1a1aa;
+}
+@media (prefers-color-scheme: dark) {
+  html:root {
+    --sileo-state-success: #1f6b3a;
+    --sileo-state-error: #9a2a1f;
+    --sileo-state-warning: #7a5212;
+    --sileo-state-info: #1d4f91;
+    --sileo-state-action: #3f3f46;
+    --sileo-state-loading: #52525b;
+  }
+}

@@ -1,0 +1,150 @@
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.barra1 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.titulo { font-size: 22px; font-weight: 600; letter-spacing: -0.015em; }
+.conteo { color: var(--muted); font-variant-numeric: tabular-nums; }
+.herramientas { display: flex; gap: 8px; margin-inline-start: auto; }
+
+.barra2 { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+.buscar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 280px;
+  max-width: 420px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.buscar svg { flex: none; stroke: var(--muted); stroke-width: 2; fill: none; }
+.buscar input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; outline: none; }
+.buscar:focus-within { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chip {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  cursor: pointer;
+}
+.limpiar { height: 28px; padding: 0 6px; border: 0; background: transparent; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.chip:focus-visible, .limpiar:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+.seleccion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+/* Alto fijo: el encabezado queda pegado al scrollear y la tabla no salta
+   entre esqueleto, datos y estados vacíos. */
+.scroll {
+  height: clamp(360px, calc(100vh - 300px), 760px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.scroll:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.tabla { width: 100%; min-width: 1080px; border-collapse: separate; border-spacing: 0; }
+
+.tabla th,
+.tabla td {
+  padding: 0 12px;
+  height: 44px;
+  text-align: start;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+.tabla th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 40px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.tabla td:last-child, .tabla th:last-child { width: 56px; text-align: end; overflow: visible; }
+
+/* Números: derecha + tabulares, en la celda Y en su encabezado */
+.fin { text-align: end !important; font-variant-numeric: tabular-nums; }
+.fin .orden { flex-direction: row-reverse; }
+
+.orden {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  margin-inline: -6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+.orden:hover { background: var(--line); color: var(--ink); }
+.orden:focus-visible { outline: 2px solid var(--focus); }
+.flecha { color: var(--muted); opacity: 0.55; font-size: 11px; }
+.flecha[data-dir] { color: var(--ink); opacity: 1; }
+
+.filaClicable { cursor: pointer; }
+.filaClicable:hover td { background: var(--surface-2); }
+.tabla tr[data-seleccionada] td { background: color-mix(in srgb, var(--focus) 9%, var(--surface)); }
+
+.esqueleto td { cursor: default; }
+.barra { display: block; height: 10px; width: 70%; border-radius: 4px; background: var(--surface-2); }
+
+.estado { height: auto !important; padding: 56px 16px !important; text-align: center !important; white-space: normal !important; max-width: none !important; }
+.estadoTitulo { font-size: 16px; font-weight: 600; }
+.estadoTexto { margin: 6px auto 16px; max-width: 46ch; color: var(--muted); }
+
+.boton {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  cursor: pointer;
+}
+.boton:hover { background: var(--surface-2); }
+.boton:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+.paginacion { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tamano { display: flex; align-items: center; gap: 8px; }
+.tamano select, .paginas button {
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.tamano select { padding: 0 6px; }
+.rango { margin-inline-start: auto; }
+.paginas { display: flex; align-items: center; gap: 4px; }
+.paginas button { width: 32px; cursor: pointer; }
+.paginas button:disabled { opacity: 0.4; cursor: default; }
+.paginas button:focus-visible, .tamano select:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.pagina { padding: 0 8px; }

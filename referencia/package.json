@@ -1,0 +1,33 @@
+{
+  "name": "data-table-lab",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "check": "node src/lib/csv.check.ts && node src/lib/esquema.check.ts"
+  },
+  "dependencies": {
+    "@tanstack/react-table": "^9.2.4",
+    "exceljs": "^4.4.0",
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "sileo": "^0.1.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
+    "typescript": "^5"
+  },
+  "type": "module",
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}
