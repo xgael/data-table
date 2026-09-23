@@ -286,3 +286,22 @@ marcaba antes. Una sonda que sólo se ha visto pasar no prueba nada.
   segundo (un Deshacer). La prueba unitaria debe reproducir `[] → datos →
   cambio` y vaciar la microtarea (`await act(async () => {})`): con un solo
   rerender pasaba con el bug puesto.
+- **El accessor se cachea POR FILA hasta que cambia `data`**, no cuando cambian
+  las columnas. Una columna que lee un mapa cargado aparte (nombre del vendedor,
+  del área) se queda con «—» si el mapa llega después que los datos. En las
+  tablas donde el mapa ya estaba en caché no se ve: mide con la página recién
+  abierta. Arreglo en la primitiva: `useMemo(() => data.slice(), [data, columnas])`.
+
+## 11. El dato que nunca llega
+
+- **Una columna con el MISMO valor en todas las filas** («—», «Pendiente») es
+  una pista: confirma que el campo existe en la tabla (`\d tabla`). Un tipo del
+  frontend puede declarar columnas que ninguna migración crea, y la pantalla
+  muestra «Duración: —» para siempre.
+- **React Query con `initialData: []` y `staleTime`**: la lista vacía cuenta como
+  fresca y la consulta no sale durante `staleTime`. Los catálogos (nombres de
+  estado, etiquetas) no llegan y la tabla muestra la clave cruda. Va en
+  `placeholderData`. Se ve en la pestaña de red: la petición no existe.
+- **Tabla vacía en la base de prueba**: siembra filas PROPIAS marcadas (un
+  valor que nada más use, borrado al final por esa marca) en vez de dar sus
+  checks por `n.a.` — ahí se escondían los dos casos de arriba.
