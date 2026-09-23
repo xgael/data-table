@@ -95,6 +95,9 @@ Cada check tiene ID para que las matrices se comparen entre corridas. Severidad:
   haber leído el código.
 - **Un script por tabla** a partir de `verificacion.md`, en el scratchpad. Guarda
   la salida: es la evidencia de la matriz.
+- **Valida la sonda contra el código de antes** (`verificacion.md` §9): corre la
+  versión final sobre un worktree de `main` y confirma que marca los fallos que
+  arreglaste. Si ahí pasa, la sonda está mal, no el código arreglado.
 
 ## 5. Arreglar por patrón
 

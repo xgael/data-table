@@ -249,3 +249,40 @@ SELECT conname, pg_get_constraintdef(oid)
 
 Deja constancia de cómo se limpia (`db:reset` + reseed) y limpia tu propio
 residuo: si una sonda dejó un valor de prueba en un campo real, bórralo.
+
+---
+
+## 9. Trampas de la propia sonda
+
+Cobradas auditando un proyecto real. Todas hicieron que la sonda mintiera, en
+un sentido o en el otro:
+
+- **`innerText` incluye el texto «sólo lector»** (clip de 1px): un encabezado
+  de ⋯ correcto parece tener texto. Mide lo visible (caja > 2px).
+- **El `textContent` de una fila pega las celdas** («Sin módulos**Activo**»): un
+  `/\bActivo\b/` sobre la fila nunca coincide. Cuenta por celda.
+- **`text-transform: uppercase`**: el encabezado es «SESSION ID» en `innerText`.
+  Los detectores de idioma, sin distinguir mayúsculas.
+- **«Sí/No» también es español**: no lo metas en la lista de palabras en inglés.
+- **Tabla vacía**: ahí «No hay registros» es lo correcto; T4/T9 son `n.a.`, no ✗.
+- **Una fila sin acciones permitidas no lleva menú** (filtrar, no deshabilitar):
+  `kebabs ≤ filas`. Pero sin menú y CON botones en la última columna = ✗.
+- **«Actualizar» no prueba el reinicio de página**: React Query conserva la
+  referencia si los datos no cambiaron. El reinicio muerde con un Deshacer.
+
+**Valida la sonda contra el código viejo.** Si corregiste un detector después de
+ver un fallo, córrela sobre `main` (un `git worktree` servido en el mismo
+puerto, que es el que el backend acepta por CORS): tiene que marcar lo que
+marcaba antes. Una sonda que sólo se ha visto pasar no prueba nada.
+
+## 10. TanStack v8 (proyectos existentes)
+
+- **La búsqueda global deja fuera columnas** cuyo primer valor no es texto o
+  número (**booleanos**: «Activo» nunca se encuentra) y las columnas sin
+  accessor. `getColumnCanGlobalFilter` explícito + un `globalFilterFn` que lea
+  `meta.buscar` o el accessor, normalizado sin acentos.
+- **`autoResetPageIndex` no reinicia en el PRIMER cambio de datos**, sólo lo
+  «registra»; en la app ese primero es la carga y el reinicio muerde en el
+  segundo (un Deshacer). La prueba unitaria debe reproducir `[] → datos →
+  cambio` y vaciar la microtarea (`await act(async () => {})`): con un solo
+  rerender pasaba con el bug puesto.
